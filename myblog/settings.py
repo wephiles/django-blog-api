@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'django-insecure-b$z-dg!9*)s85%)t#t7--&nqb@5cgxppln-+mqqh#_n6yr_(6)
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -70,17 +68,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # 使用 MySQL 后端
+        'NAME': 'my_blog',  # 数据库名
+        'USER': 'study',  # 数据库用户
+        'PASSWORD': '123456',  # 密码
+        'HOST': 'localhost',  # 数据库地址，本地用 localhost
+        'PORT': '3306',  # MySQL 默认端口
+        'OPTIONS': {
+            'charset': 'utf8',  # 强烈建议 utf8mb4
+            # 开启严格模式，防止数据静默截断等问题
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -100,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -111,7 +122,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
