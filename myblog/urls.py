@@ -16,11 +16,20 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 from blog import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', views.index),
+
+    # JWT 登录和刷新 Token 的接口（自带视图，不需要自己写逻辑）
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # 登录接口
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # 刷新接口
+    # 稍后我们博客的 API 路由
+    path('api/v1/', include('blog.urls')),
 ]

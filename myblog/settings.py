@@ -26,6 +26,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# User model
+AUTH_USER_MODEL = 'blog.User'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -35,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 本地app
     'blog.apps.BlogConfig',
+
+    # 第三方app
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +56,21 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# 配置 DRF 的全局认证方式（可选，但建议配置）
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+# 配置 JWT 的有效期（过期的Token需要刷新）
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Access Token 有效期1天
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh Token 有效期7天
+}
 
 ROOT_URLCONF = 'myblog.urls'
 
@@ -87,7 +111,7 @@ DATABASES = {
         'HOST': 'localhost',  # 数据库地址，本地用 localhost
         'PORT': '3306',  # MySQL 默认端口
         'OPTIONS': {
-            'charset': 'utf8',  # 强烈建议 utf8mb4
+            'charset': 'utf8mb4',  # 强烈建议 utf8mb4
             # 开启严格模式，防止数据静默截断等问题
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
